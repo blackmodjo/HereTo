@@ -14,3 +14,7 @@ html, body.hereNS {
     max-height: 400px;
     overflow-y: scroll;
 }
+
+.hereNS .mapSearchBoxStyle {
+    border: 3px solid #124191;
+}

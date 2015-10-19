@@ -27,7 +27,7 @@
                         {{ x.title }}
                     </li>
                 </ul>
-                <input type="text" class="form-control input-lg" ng-model="searchFor" ng-change="search()"
+                <input type="text" class="mapSearchBoxStyle form-control input-lg" ng-model="searchFor" ng-change="search()"
                        placeholder="Directions to addresses, city, restaurant">
                 <ul class="list-group directionsResultsStyle" id="mapDirections" ng-model="directionsResults">
                     <li class="list-group-item" ng-repeat="x in directionsResults">

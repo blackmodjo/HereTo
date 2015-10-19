@@ -40,6 +40,12 @@ var MapHelper = {
         MapHelper.mapCenter();
     },
     setToPos: function(position, points) {
+        MapHelper.mapToWaypoint(position);
+        MapHelper.mapToDirections(points);
+        MapHelper.mapCenter();
+    },
+
+    mapToWaypoint: function (position) {
         MapHelper.wayPointLoc.lat = position[0];
         MapHelper.wayPointLoc.lng = position[1];
         if (MapHelper.marker.wayPoint) {
@@ -47,7 +53,9 @@ var MapHelper = {
         }
         MapHelper.marker.wayPoint = new H.map.Marker(MapHelper.wayPointLoc);
         window[myConfig.maps.nameSpace]['mapGroup'].addObject(MapHelper.marker.wayPoint);
+    },
 
+    mapToDirections: function (points) {
         var strip = new H.geo.Strip();
         points.forEach(function(point) {
             strip.pushPoint(point);
@@ -60,8 +68,6 @@ var MapHelper = {
 
         // Add the polyline to the map:
         window[myConfig.maps.nameSpace]['mapGroup'].addObject(MapHelper.marker.wayPolyline);
-
-        MapHelper.mapCenter();
     },
     mapCenter: function() {
         var bounds = window[myConfig.maps.nameSpace]['mapGroup'].getBounds();

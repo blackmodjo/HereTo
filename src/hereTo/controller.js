@@ -36,9 +36,7 @@ hereApp.controller("hereAppController", function($scope, $http) {
                     var points = [];
 
                     $scope.searchFor = place.title;
-                    if (chosenRoute.summary && chosenRoute.summary.text) {
-                       //$scope.directionsResults.push(chosenRoute.summary.text);
-                    }
+
                     if (chosenRoute.leg && chosenRoute.leg[0] && chosenRoute.leg[0].maneuver) {
                         $scope.directionsResults = chosenRoute.leg[0].maneuver;
                         chosenRoute.leg[0].maneuver.forEach(function(entry) {
@@ -49,6 +47,9 @@ hereApp.controller("hereAppController", function($scope, $http) {
                                 });
                             }
                         });
+                    }
+                    if (chosenRoute.summary && chosenRoute.summary.text) {
+                        $scope.directionsResults.unshift({instruction: chosenRoute.summary.text});
                     }
                     MapHelper.setToPos(position, points);
                 }
