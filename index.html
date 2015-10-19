@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, width=device-width"/>
+
+<link rel="stylesheet" href="assets/css/bootstrap.min.css" charset="utf-8">
+<link rel="stylesheet" href="assets/css/app.css">
+<link rel="stylesheet" type="text/css" href="assets/css/mapsjs-ui.css" />
+
+<script src="assets/libs/angular.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/libs/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/libs/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/libs/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
+<script src="assets/libs/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
+<script src="config/configs.js" type="text/javascript" charset="utf-8"></script>
+
+<body class="hereNS" ng-app="hereToApp" ng-controller="hereAppController" ng-init="init()">
+
+<div class="container-fluid">
+    <div class="mapStyle" id="mapContainer" resize-map></div>
+
+    <form class="form-horizontal">
+        <div class="form-group">
+            <div class="col-lg-11">
+                <ul class="list-group mapSearchResultsStyle" id="mapSearchResults" ng-model="searchResults">
+                    <li class="list-group-item" ng-repeat="x in searchResults" ng-click="findRoute(x.position)">
+                        {{ x.title }}
+                    </li>
+                </ul>
+                <input type="text" class="form-control input-lg"
+                       ng-model="searchFor" placeholder="address, city, restaurant">
+            </div>
+            <div class="col-xs">
+                <button class="btn btn-success" ng-disabled="error" ng-click="search()">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<script src = "src/hereTo/helpers/map.js" type="text/javascript" charset="utf-8"></script>
+<script src = "src/hereTo/app.js"></script>
+<script src = "src/hereTo/controller.js"></script>
+<script src = "src/hereTo/directives/resize.js"></script>
+</body>
+</html>
