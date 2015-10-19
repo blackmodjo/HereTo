@@ -21,19 +21,19 @@
 
     <form class="form-horizontal">
         <div class="form-group">
-            <div class="col-lg-11">
+            <div class="col-lg">
                 <ul class="list-group mapSearchResultsStyle" id="mapSearchResults" ng-model="searchResults">
-                    <li class="list-group-item" ng-repeat="x in searchResults" ng-click="findRoute(x.position)">
+                    <li class="list-group-item" ng-repeat="x in searchResults" ng-click="findRoute(x)">
                         {{ x.title }}
                     </li>
                 </ul>
-                <input type="text" class="form-control input-lg"
-                       ng-model="searchFor" placeholder="address, city, restaurant">
-            </div>
-            <div class="col-xs">
-                <button class="btn btn-success" ng-disabled="error" ng-click="search()">
-                    <span class="glyphicon glyphicon-search"></span>
-                </button>
+                <input type="text" class="form-control input-lg" ng-model="searchFor" ng-change="search()"
+                       placeholder="Directions to addresses, city, restaurant">
+                <ul class="list-group directionsResultsStyle" id="mapDirections" ng-model="directionsResults">
+                    <li class="list-group-item" ng-repeat="x in directionsResults">
+                        {{ x.instruction | removeTag }}
+                    </li>
+                </ul>
             </div>
         </div>
     </form>
@@ -42,5 +42,6 @@
 <script src = "src/hereTo/app.js"></script>
 <script src = "src/hereTo/controller.js"></script>
 <script src = "src/hereTo/directives/resize.js"></script>
+<script src = "src/hereTo/filters/tagUtils.js"></script>
 </body>
 </html>

@@ -15,19 +15,33 @@ hereApp.controller("hereAppController", function($scope, $http) {
     };
 
     $scope.search = function() {
-        return $http.get(MapHelper.getPlacesParams(MapHelper.getCurLogString(), $scope.searchFor))
-            .success(function(response) {
-                if (response.results && response.results.items) {
-                    $scope.searchResults = response.results.items.splice(0,4);
-                }
-            });
+        if($scope.searchFor.length > 3) {
+            return $http.get(MapHelper.getPlacesParams(MapHelper.getCurLogString(), $scope.searchFor))
+                .success(function (response) {
+                    if (response.results && response.results.items) {
+                        $scope.searchResults = response.results.items.splice(0, 4);
+                    }
+                });
+        }
     };
 
-    $scope.findRoute = function(position) {
+    $scope.findRoute = function(place) {
+        var position = place.position;
         return $http.get(MapHelper.getRouteParams(MapHelper.getCurLogString(), position.join()))
             .success(function(response) {
                 if (response.response.route) {
+                    var chosenRoute = response.response.route[0];
                     $scope.searchResults = [];
+                    $scope.directionsResults = [];
+
+                    $scope.searchFor = place.title;
+                    if (chosenRoute.summary && chosenRoute.summary.text) {
+                       // $scope.directionsResults = [chosenRoute.summary.text];
+                    }
+                    if (chosenRoute.leg && chosenRoute.leg[0] && chosenRoute.leg[0].maneuver) {
+                        $scope.directionsResults = chosenRoute.leg[0].maneuver;
+                    }
+                    MapHelper.setToPos(position);
                 }
             });
     };

@@ -6,7 +6,11 @@ html, body.hereNS {
     width:auto;
 }
 .hereNS .mapSearchResultsStyle {
-    position: absolute;
-    z-index: 99;
-    bottom: 26px;
+    margin-bottom: 1px;
+}
+
+.hereNS .directionsResultsStyle {
+    margin-top: 1px;
+    max-height: 400px;
+    overflow-y: scroll;
 }

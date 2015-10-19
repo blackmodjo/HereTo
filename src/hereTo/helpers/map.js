@@ -4,6 +4,15 @@ var MapHelper = {
         lat: '37.7942',
         lng: '-122.4070',
     },
+    wayPointLoc: {
+        lat: '',
+        lng: '',
+    },
+    marker:{
+        user:       false,
+        wayPoint:   false,
+    },
+
     getConfigParams: function () {
         return 'app_id='+this.config.maps.appId+'&app_code='+this.config.maps.appCode;
     },
@@ -25,15 +34,22 @@ var MapHelper = {
     setUserPos: function(position) {
         MapHelper.userLoc.lat = position.coords.latitude;
         MapHelper.userLoc.lng = position.coords.longitude;
-        var marker = new H.map.Marker(MapHelper.userLoc);
-        window[myConfig.maps.nameSpace].map.addObject(marker);
-        window[myConfig.maps.nameSpace].map.setCenter(MapHelper.userLoc);
-        window[myConfig.maps.nameSpace].map.setZoom(11);
+        MapHelper.marker.user = new H.map.Marker(MapHelper.userLoc);
+        window[myConfig.maps.nameSpace]['mapGroup'].addObject(MapHelper.marker.user);
+        MapHelper.mapCenter();
     },
     setToPos: function(position) {
-        var marker = new H.map.Marker(position);
-        window[myConfig.maps.nameSpace].map.addObject(marker);
-        window[myConfig.maps.nameSpace].map.setCenter(MapHelper.userLoc);
+        MapHelper.wayPointLoc.lat = position[0];
+        MapHelper.wayPointLoc.lng = position[1];
+        if (MapHelper.marker.wayPoint) {
+            window[myConfig.maps.nameSpace]['mapGroup'].removeObject(MapHelper.marker.wayPoint);
+        }
+        MapHelper.marker.wayPoint = new H.map.Marker(MapHelper.wayPointLoc);
+        window[myConfig.maps.nameSpace]['mapGroup'].addObject(MapHelper.marker.wayPoint);
+        MapHelper.mapCenter();
+    },
+    mapCenter: function() {
+        window[myConfig.maps.nameSpace].map.setCenter(window[myConfig.maps.nameSpace]['mapGroup'].getBounds().getCenter());
         window[myConfig.maps.nameSpace].map.setZoom(11);
     },
     getCurLogString: function() {
@@ -71,6 +87,10 @@ var MapHelper = {
 
         // Instantiate the default behavior, providing the mapEvents object:
         var behavior = new H.mapevents.Behavior(_myRf.mapEvents);
+
+        exports[myConfig.maps.nameSpace]['mapGroup'] = new H.map.Group();
+        _myRf.map.addObject(_myRf.mapGroup);
+
         this.findUserLoc();
     }
 };
