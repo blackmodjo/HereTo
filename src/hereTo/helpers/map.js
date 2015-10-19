@@ -1,8 +1,8 @@
 var MapHelper = {
     config: myConfig,
     userLoc: {
-        lat: '37.7942',
-        lng: '-122.4070',
+        lat: '52.5167',
+        lng: '13.3833',
     },
     wayPointLoc: {
         lat: '',
@@ -11,17 +11,18 @@ var MapHelper = {
     marker:{
         user:       false,
         wayPoint:   false,
+        wayPolyline:   false,
     },
 
     getConfigParams: function () {
         return 'app_id='+this.config.maps.appId+'&app_code='+this.config.maps.appCode;
     },
     getPlacesParams: function (form, query) {
-        return this.config.maps.placesApiUrl+'?at='+form+'&q='+encodeURIComponent(query)+'&'+this.getConfigParams();
+        return this.config.maps.placesApiUrl+'?at='+encodeURIComponent(form)+'&q='+encodeURIComponent(query)+'&'+this.getConfigParams();
     },
     getRouteParams: function (way1, way2) {
         var mode = encodeURIComponent('fastest;car;traffic:enabled;');
-        return this.config.maps.routeApiUrl+'?waypoint0='+way1+'&waypoint1='+way2+'&mode='+mode+'&'+this.getConfigParams();
+        return this.config.maps.routeApiUrl+'?waypoint0='+encodeURIComponent(way1)+'&waypoint1='+encodeURIComponent(way2)+'&mode='+mode+'&'+this.getConfigParams();
     },
 
     findUserLoc: function() {
@@ -38,7 +39,7 @@ var MapHelper = {
         window[myConfig.maps.nameSpace]['mapGroup'].addObject(MapHelper.marker.user);
         MapHelper.mapCenter();
     },
-    setToPos: function(position) {
+    setToPos: function(position, points) {
         MapHelper.wayPointLoc.lat = position[0];
         MapHelper.wayPointLoc.lng = position[1];
         if (MapHelper.marker.wayPoint) {
@@ -46,6 +47,20 @@ var MapHelper = {
         }
         MapHelper.marker.wayPoint = new H.map.Marker(MapHelper.wayPointLoc);
         window[myConfig.maps.nameSpace]['mapGroup'].addObject(MapHelper.marker.wayPoint);
+
+        var strip = new H.geo.Strip();
+        points.forEach(function(point) {
+            strip.pushPoint(point);
+        });
+        if (MapHelper.marker.wayPolyline) {
+            window[myConfig.maps.nameSpace]['mapGroup'].removeObject(MapHelper.marker.wayPolyline);
+        }
+        // Initialize a polyline with the strip:
+        MapHelper.marker.wayPolyline = new H.map.Polyline(strip, { style: { lineWidth: 10 }});
+
+        // Add the polyline to the map:
+        window[myConfig.maps.nameSpace]['mapGroup'].addObject(MapHelper.marker.wayPolyline);
+
         MapHelper.mapCenter();
     },
     mapCenter: function() {

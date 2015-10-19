@@ -33,15 +33,24 @@ hereApp.controller("hereAppController", function($scope, $http) {
                     var chosenRoute = response.response.route[0];
                     $scope.searchResults = [];
                     $scope.directionsResults = [];
+                    var points = [];
 
                     $scope.searchFor = place.title;
                     if (chosenRoute.summary && chosenRoute.summary.text) {
-                       // $scope.directionsResults = [chosenRoute.summary.text];
+                       //$scope.directionsResults.push(chosenRoute.summary.text);
                     }
                     if (chosenRoute.leg && chosenRoute.leg[0] && chosenRoute.leg[0].maneuver) {
                         $scope.directionsResults = chosenRoute.leg[0].maneuver;
+                        chosenRoute.leg[0].maneuver.forEach(function(entry) {
+                            if (entry.position) {
+                                points.push({
+                                    lat: entry.position.latitude,
+                                    lng: entry.position.longitude
+                                });
+                            }
+                        });
                     }
-                    MapHelper.setToPos(position);
+                    MapHelper.setToPos(position, points);
                 }
             });
     };
