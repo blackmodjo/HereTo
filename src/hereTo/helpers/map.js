@@ -49,8 +49,9 @@ var MapHelper = {
         MapHelper.mapCenter();
     },
     mapCenter: function() {
-        window[myConfig.maps.nameSpace].map.setCenter(window[myConfig.maps.nameSpace]['mapGroup'].getBounds().getCenter());
-        window[myConfig.maps.nameSpace].map.setZoom(11);
+        var bounds = window[myConfig.maps.nameSpace]['mapGroup'].getBounds();
+        window[myConfig.maps.nameSpace].map.setCenter(bounds.getCenter());
+        window[myConfig.maps.nameSpace].map.setViewBounds(bounds);
     },
     getCurLogString: function() {
         return this.userLoc.lat+','+this.userLoc.lng;
